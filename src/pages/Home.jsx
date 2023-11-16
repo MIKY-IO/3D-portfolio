@@ -1,19 +1,12 @@
 import { useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import Loader from "../components/Loader";
-import Island from "../models/Island";
-import Sky from "../models/Sky";
-import Bird from "../models/Bird";
-import Plane from "../models/Plane";
-
-{
-  /* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
-        POPUP
-      </div> */
-}
+import { Bird, Island, Plane, Sky } from "../models";
+import HomeInfo from "../components/HomeInfo";
 
 const Home = () => {
   const [isRotating, setIsRotating] = useState(false);
+  const [currentStage, setCurrentStage] = useState(1);
 
   const adjustIslandForScreenSize = () => {
     let screenScale = null;
@@ -49,6 +42,10 @@ const Home = () => {
 
   return (
     <section className="w-full h-screen relative">
+      <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
+        {currentStage && <HomeInfo currentStage={currentStage} />}
+      </div>
+
       <Canvas
         className={
           "w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}"
@@ -77,7 +74,7 @@ const Home = () => {
             rotation={[0, 20, 0]}
           />
           <Bird />
-          <Sky />
+          <Sky isRotating={isRotating} />
 
           <Island
             position={islandPosition}
@@ -85,6 +82,7 @@ const Home = () => {
             rotation={islandRotation}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
+            setCurrentStage={setCurrentStage}
           />
         </Suspense>
       </Canvas>
